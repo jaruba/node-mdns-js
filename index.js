@@ -16,7 +16,7 @@ module.exports.Browser = require('./lib/browser'); //just for convenience
 /**
  * Create a browser instance
  * @method
- * @param {string} [serviceType] - The Service type to browse for. Defaults to ServiceType.wildcard
+ * @param {string|ServiceType} serviceType - The service type to browse for. Defaults to ServiceType.wildcard
  * @return {Browser}
  */
 module.exports.createBrowser = function browserCreated(serviceType) {
@@ -24,20 +24,6 @@ module.exports.createBrowser = function browserCreated(serviceType) {
     serviceType = st.ServiceType.wildcard;
   }
   return new module.exports.Browser(networking, serviceType);
-};
-
-
-module.exports.excludeInterface = function (iface) {
-  if (networking.started) {
-    throw new Error('can not exclude interfaces after start');
-  }
-  if (iface === '0.0.0.0') {
-    networking.INADDR_ANY = false;
-  }
-  else {
-    var err = new Error('Not a supported interface');
-    err.interface = iface;
-  }
 };
 
 
