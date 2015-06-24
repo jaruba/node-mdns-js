@@ -13,8 +13,8 @@ but adapted for node. It's not much left of that now though.
 
 
 
-Cxamples
--------
+Examples
+--------
 
 ```javascript
 var mdns = require('mdns-js');
@@ -35,7 +35,6 @@ browser.on('serviceDown', function (service) {
 });
 
 ```
-
 
 ```javascript
 var mdns = require('mdns-js');
