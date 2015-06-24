@@ -1,27 +1,16 @@
 mDNS-js
 ==========
 
+Forked [from kmpm/node-mdns-js](https://github.com/kmpm/node-mdns-js)
+
 Pure JavaScript/NodeJS mDNS discovery implementation.
-It's definitely not a full implementation at the current
-state and it will NOT work in the browser. 
+This implementation mimics the node-mdns behavior, works under linux at least and is compatible with avahi.
+If another daemon like avahi or dns-sd is running, the port sharing feature must be available on your system.
 
 The starting inspiration came from
 https://github.com/GoogleChrome/chrome-app-samples/tree/master/mdns-browser
 but adapted for node. It's not much left of that now though.
 
-Install by
-
-    npm install mdns-js
-
-[![Build Status](https://travis-ci.org/kmpm/node-mdns-js.svg?branch=master)](https://travis-ci.org/kmpm/node-mdns-js)
-
-Future
-------
-It would be great to have a full implementation of mDSN + DNS-SD in pure JS but
-progress will be slow unless someone is willing to pitch in with
-pull requests, specifications for wanted functions etc.
-Also, as you should avoid to have multiple mDNS stacks on a system this
-might clash with stuff like avahi and bonjour.
 
 
 example
@@ -29,18 +18,22 @@ example
 
 ```javascript
 var mdns = require('mdns-js');
-//if you have another mdns daemon running, like avahi or bonjour, uncomment following line
-//mdns.excludeInterface('0.0.0.0');
 
-var browser = mdns.createBrowser();
+var browser = mdns.createBrowser(mdns.tcp('http'));
 
 browser.on('ready', function () {
     browser.discover(); 
 });
 
-browser.on('update', function (data) {
-    console.log('data:', data);
+
+browser.on('serviceUp', function (service) {
+  console.log('service up: ', service.name, service.address);
 });
+
+browser.on('serviceDown', function (service) {
+  console.log('>>>> service down: ', service.name, service.address);
+});
+
 ```
 
 
@@ -104,9 +97,3 @@ References
 * RFC 6763 - DNS Based Service Discovery (DNS-SD) - http://tools.ietf.org/html/rfc6763
 * http://www.tcpipguide.com/free/t_DNSMessageHeaderandQuestionSectionFormat.htm
 
-
-Contributors
-============
-
-* James Sigurðarson, @jamiees2
-* Stefan Sauer, @ensonic
