@@ -1,7 +1,7 @@
 mDNS-js
 ==========
 
-Forked [from kmpm/node-mdns-js](https://github.com/kmpm/node-mdns-js)
+Forked from [kmpm/node-mdns-js](https://github.com/kmpm/node-mdns-js)
 
 Pure JavaScript/NodeJS mDNS discovery implementation.
 This implementation mimics the node-mdns behavior, works under linux at least and is compatible with avahi.
@@ -13,7 +13,7 @@ but adapted for node. It's not much left of that now though.
 
 
 
-example
+Cxamples
 -------
 
 ```javascript
@@ -37,6 +37,22 @@ browser.on('serviceDown', function (service) {
 ```
 
 
+```javascript
+var mdns = require('mdns-js');
+
+var serviceName = 'hello_from_' + require('os').hostname().split('.').shift();
+var txtRecord = {
+    txtvers:'1',
+    port:5876,
+    seg:1
+};
+
+var service = mdns.createAdvertisement(mdns.tcp('http'), 5876, {
+  name:serviceName,
+  txtRecord:txtRecord});
+
+service.start();
+```
 
 Debugging
 ---------
@@ -55,30 +71,6 @@ you could limit the debug information to just that.
 ```bash
 DEBUG=mdns:browser:packet node examples/simple.js
 ```
-
-Contributing
-------------
-Pull-request will be gladly accepted.
-
-If possible any api should be as close match to the api of node-mdns but
-be pragmatic. Look at issue #5.
-
-Please run any existing tests with
-
-    npm test
-
-and preferably add more tests.
-
-
-Before creating a pull-request please run 
-
-    npm run lint 
-
-This will run jshint as well as jscs that will do some basic syntax
-and code style checks.
-Fix any issues befor committing and creating a pull-request.
-
-Look at the .jshintrc and .jscs.json for the details.
 
 
 License
